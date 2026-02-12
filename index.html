@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>MyStreme – Set-Up</title>
+
+  <style>
+    :root{
+      --stroke: rgba(255,255,255,0.10);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.62);
+      --muted2: rgba(255,255,255,0.46);
+      --accent:#29c7ff;
+
+      --shadow: 0 18px 40px rgba(0,0,0,0.55);
+      --radius: 18px;
+      --radius2: 26px;
+
+      --like:#2cff9f;
+      --dislike:#ff4d6d;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 900px at 75% 15%, rgba(41,199,255,0.12), transparent 55%),
+        radial-gradient(900px 700px at 10% 85%, rgba(41,199,255,0.10), transparent 50%),
+        linear-gradient(180deg, #04060a 0%, #06080b 55%, #030508 100%);
+      overflow-x:hidden;
+      overflow-y:auto;
+    }
+
+    /* Anchor to top (no vertical centering) */
+    .safe{
+      padding-top: max(12px, env(safe-area-inset-top));
+      padding-bottom: max(18px, env(safe-area-inset-bottom));
+      padding-left: max(16px, env(safe-area-inset-left));
+      padding-right: max(16px, env(safe-area-inset-right));
+      min-height: 100vh;
+      display:block;
+    }
+
+    .wrap{
+      width: min(520px, 100%);
+      margin: 0 auto;
+      padding-top: 8px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .steps{
+      font-size: 14px;
+      letter-spacing: 0.2px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .steps b{ color: var(--accent); font-weight: 650; }
+
+    .progress{
+      height: 6px;
+      width: 120px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      flex: 0 0 auto;
+      margin-left: 10px;
+    }
+    .bar{
+      height:100%;
+      width:20%;
+      background: linear-gradient(90deg, var(--accent), rgba(41,199,255,0.55));
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+
+    .content{ padding: 14px 16px 16px; }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding-top: 4px;
+      padding-bottom: 8px;
+    }
+    .logo img{
+      width: 170px;
+      max-width: 56vw;
+      height: auto;
+      filter: drop-shadow(0 10px 22px rgba(41,199,255,0.22));
+      opacity: 0.98;
+    }
+
+    h1{
+      margin: 2px 0 6px;
+      font-size: 24px;
+      font-weight: 750;
+      letter-spacing: 0.2px;
+    }
+    p{
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.35;
+      font-size: 15px;
+    }
+    .centerText{ text-align:center; }
+
+    .field{ margin: 12px 0; }
+    .label{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      margin-bottom: 8px;
+      color: rgba(255,255,255,0.80);
+      font-size: 14px;
+      letter-spacing: 0.2px;
+    }
+    .hint{ font-size: 13px; color: var(--muted2); }
+
+    input[type="email"], input[type="password"]{
+      width:100%;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.30);
+      color: var(--text);
+      outline:none;
+      font-size: 16px;
+    }
+    input[type="email"]:focus, input[type="password"]:focus{
+      border-color: rgba(41,199,255,0.55);
+      box-shadow: 0 0 0 4px rgba(41,199,255,0.10);
+    }
+
+    .seg{ display:flex; gap: 10px; flex-wrap:wrap; }
+    .chip{ position:relative; flex: 1 1 auto; min-width: 92px; }
+    .chip input{ position:absolute; opacity:0; pointer-events:none; }
+    .chip label{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 12px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.88);
+      cursor:pointer;
+      user-select:none;
+      min-height: 44px;
+      font-weight: 620;
+      letter-spacing: 0.15px;
+      font-size: 15px;
+      transition: transform .06s ease, border-color .2s ease, background .2s ease;
+    }
+    .chip label:active{ transform: scale(0.99); }
+    .chip input:checked + label{
+      border-color: rgba(41,199,255,0.65);
+      background: rgba(41,199,255,0.12);
+      box-shadow: 0 0 0 4px rgba(41,199,255,0.10);
+      color: rgba(255,255,255,0.95);
+    }
+
+    .actions{ display:flex; gap: 12px; margin-top: 14px; }
+    .btn{
+      width:100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.88);
+      font-weight: 700;
+      letter-spacing: 0.25px;
+      cursor:pointer;
+      min-height: 48px;
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+      font-size: 14px;
+    }
+    .btn:active{ transform: scale(0.99); }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(41,199,255,0.22), rgba(41,199,255,0.10));
+      border-color: rgba(41,199,255,0.45);
+      color: rgba(255,255,255,0.96);
+    }
+    .btn.link{
+      background: transparent;
+      border-color: rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.82);
+    }
+
+    .error{
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,77,109,0.35);
+      background: rgba(255,77,109,0.12);
+      color: rgba(255,255,255,0.90);
+      font-size: 13px;
+      display:none;
+    }
+
+    /* ---------------- Services page ---------------- */
+    .subhead{
+      margin: 2px 0 10px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .serviceList{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .serviceRow{
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      min-height: 58px;
+      cursor:pointer;
+      user-select:none;
+      transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+      min-width: 0;
+    }
+
+    .serviceRow.on{
+      border-color: rgba(41,199,255,0.55);
+      background: rgba(41,199,255,0.10);
+      box-shadow: 0 0 0 4px rgba(41,199,255,0.08);
+    }
+
+    .svcLeft{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width:0;
+    }
+
+    /* Logo box */
+    .svcLogoBox{
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex: 0 0 auto;
+    }
+    .svcLogoBox img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    .svcName{
+      font-size: 18px;
+      font-weight: 800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      min-width:0;
+    }
+
+    .svcCheck{
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid rgba(255,255,255,0.30);
+      background: transparent;
+      flex: 0 0 auto;
+      position:relative;
+    }
+    .serviceRow.on .svcCheck{
+      border-color: rgba(41,199,255,0.75);
+      background: rgba(41,199,255,0.18);
+    }
+    .serviceRow.on .svcCheck::after{
+      content:"";
+      position:absolute;
+      left: 6px;
+      top: 2px;
+      width: 6px;
+      height: 12px;
+      border-right: 3px solid rgba(255,255,255,0.92);
+      border-bottom: 3px solid rgba(255,255,255,0.92);
+      transform: rotate(45deg);
+    }
+
+    /* ---------------- Likes/Dislikes ---------------- */
+    .ldHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .ldTitle{
+      font-size: 24px;
+      font-weight: 850;
+      letter-spacing: 0.2px;
+      margin: 0;
+      white-space:nowrap;
+      line-height: 1;
+    }
+    .ldPill{
+      font-size: 13px;
+      color: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      padding: 8px 10px;
+      border-radius: 999px;
+      white-space:nowrap;
+      flex: 0 0 auto;
+    }
+    .ldSub{
+      margin: 2px 0 8px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .listArea{
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .condensed{
+      font-family:
+        "HelveticaNeue-CondensedBold",
+        "HelveticaNeue-Condensed",
+        "Arial Narrow",
+        "Roboto Condensed",
+        "Noto Sans Condensed",
+        system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      letter-spacing: 0.1px;
+    }
+
+    /* Same size for ALL titles */
+    .gName{
+      font-weight: 900;
+      font-size: 18px;
+      line-height: 1.05;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      min-width:0;
+    }
+
+    .genreCard{
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      min-height: 46px;
+      transition: background .2s ease, border-color .2s ease, box-shadow .2s ease;
+      min-width:0;
+    }
+
+    .genreCard.liked{
+      border-color: rgba(44,255,159,0.45);
+      background: rgba(44,255,159,0.10);
+      box-shadow: 0 0 0 4px rgba(44,255,159,0.06);
+    }
+    .genreCard.disliked{
+      border-color: rgba(255,77,109,0.45);
+      background: rgba(255,77,109,0.10);
+      box-shadow: 0 0 0 4px rgba(255,77,109,0.06);
+    }
+
+    .toggles{
+      display:flex;
+      gap: 8px;
+      flex-shrink:0;
+    }
+    .tbtn{
+      width: 44px;
+      height: 38px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.25);
+      color: rgba(255,255,255,0.78);
+      font-size: 18px;
+      font-weight: 800;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      user-select:none;
+      transition: transform .06s ease, background .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .tbtn:active{ transform: scale(0.99); }
+    .tbtn.like.on{
+      border-color: rgba(44,255,159,0.55);
+      background: rgba(44,255,159,0.12);
+      color: rgba(255,255,255,0.95);
+      box-shadow: 0 0 0 4px rgba(44,255,159,0.08);
+    }
+    .tbtn.dislike.on{
+      border-color: rgba(255,77,109,0.55);
+      background: rgba(255,77,109,0.12);
+      color: rgba(255,255,255,0.95);
+      box-shadow: 0 0 0 4px rgba(255,77,109,0.08);
+    }
+
+    .subRow{
+      margin-top: 8px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .showMore{
+      color: rgba(41,199,255,0.92);
+      font-weight: 850;
+      cursor:pointer;
+      user-select:none;
+      padding: 6px 0;
+      font-size: 15px;
+    }
+    .countNote{
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,0.08);
+      margin: 8px 0;
+      display:none;
+    }
+
+    /* 2-up grid */
+    .grid2{
+      display:grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 10px;
+      width: 100%;
+    }
+
+    .genreTile{
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius);
+      padding: 10px 10px;
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      min-height: 52px;
+      min-width:0;
+      overflow:hidden;
+    }
+    .genreTile .toggles{ gap: 6px; }
+    .genreTile .tbtn{ width: 40px; height: 36px; border-radius: 12px; }
+
+    /* Tolerance page */
+    .radioStack{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .radioItem{
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius);
+      padding: 14px 14px;
+      display:flex;
+      align-items:flex-start;
+      gap: 12px;
+      cursor:pointer;
+      transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    .dot{
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.35);
+      margin-top: 4px;
+      flex-shrink:0;
+      position:relative;
+    }
+    .dot::after{
+      content:"";
+      position:absolute;
+      inset: 3px;
+      border-radius:999px;
+      background: transparent;
+    }
+    .radioItem.on{
+      border-color: rgba(41,199,255,0.55);
+      background: rgba(41,199,255,0.10);
+      box-shadow: 0 0 0 4px rgba(41,199,255,0.08);
+    }
+    .radioItem.on .dot{ border-color: rgba(41,199,255,0.75); }
+    .radioItem.on .dot::after{ background: rgba(41,199,255,0.95); }
+
+    .rText b{
+      display:block;
+      font-weight: 820;
+      margin-bottom: 2px;
+      font-size: 19px;
+      line-height: 1.05;
+    }
+    .rText span{
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    /* Success page */
+    .success{
+      text-align:center;
+      padding: 6px 4px 0;
+    }
+    .check{
+      width: 62px;
+      height: 62px;
+      border-radius: 999px;
+      border: 1px solid rgba(44,255,159,0.35);
+      background: rgba(44,255,159,0.10);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin: 8px auto 10px;
+      box-shadow: 0 0 0 6px rgba(44,255,159,0.06);
+      font-size: 28px;
+    }
+    .successActions{
+      flex-direction:column;
+      margin-top: 18px;
+      gap: 20px;
+    }
+    .successActions .btn{
+      font-size: 16px;
+      letter-spacing: 0.35px;
+      min-height: 52px;
+    }
+
+    .hidden{ display:none !important; }
+  </style>
+</head>
+
+<body>
+  <div class="safe">
+    <div class="wrap">
+      <div class="card" id="cardRoot">
+        <div class="topbar">
+          <div class="steps"><b id="stepName">Welcome</b> <span id="stepSub">Step 1 of 5</span></div>
+          <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+        </div>
+
+        <div class="content">
+
+          <!-- PAGE 1 -->
+          <section id="page1">
+            <div class="logo">
+              <img src="MyStreme Logo.png" alt="MyStreme Logo" />
+            </div>
+
+            <div class="centerText">
+              <h1>Welcome to MyStreme</h1>
+              <p>Please create your account:</p>
+            </div>
+
+            <div class="field">
+              <div class="label"><span>EMAIL</span></div>
+              <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" />
+            </div>
+
+            <div class="field">
+              <div class="label"><span>PASSWORD</span><span class="hint">8+ characters recommended</span></div>
+              <input id="password" type="password" autocomplete="new-password" placeholder="Create a password" />
+            </div>
+
+            <div class="field">
+              <div class="label"><span>Gender</span></div>
+              <div class="seg" role="radiogroup" aria-label="Gender">
+                <div class="chip">
+                  <input type="radio" name="gender" id="gM" value="M" />
+                  <label for="gM">M</label>
+                </div>
+                <div class="chip">
+                  <input type="radio" name="gender" id="gF" value="F" />
+                  <label for="gF">F</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label"><span>Age</span></div>
+              <div class="seg" role="radiogroup" aria-label="Age Range">
+                <div class="chip">
+                  <input type="radio" name="age" id="a1" value="13-29" />
+                  <label for="a1">13-29</label>
+                </div>
+                <div class="chip">
+                  <input type="radio" name="age" id="a2" value="30-55" />
+                  <label for="a2">30-55</label>
+                </div>
+                <div class="chip">
+                  <input type="radio" name="age" id="a3" value="56+" />
+                  <label for="a3">56+</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="error" id="err1"></div>
+
+            <div class="actions">
+              <button class="btn primary" id="next1">NEXT</button>
+            </div>
+          </section>
+
+          <!-- PAGE 2: Services -->
+          <section id="page2" class="hidden">
+            <h1>Please select services you subscribe to:</h1>
+            <div class="subhead">Check all that apply.</div>
+            <div id="serviceList" class="serviceList"></div>
+
+            <div class="actions">
+              <button class="btn link" id="back2">BACK</button>
+              <button class="btn primary" id="next2">NEXT</button>
+            </div>
+          </section>
+
+          <!-- PAGE 3: Likes/Dislikes -->
+          <section id="page3" class="hidden">
+            <div class="ldHeader">
+              <div class="ldTitle">Likes &amp; Dislikes</div>
+              <div class="ldPill">👍 Like &nbsp;|&nbsp; 👎 Dislike</div>
+            </div>
+
+            <div class="ldSub">Please select 3 or more:</div>
+
+            <div id="selectedArea" class="listArea"></div>
+            <div class="divider" id="ldDivider"></div>
+            <div id="unselectedArea" class="listArea"></div>
+
+            <div class="subRow">
+              <div class="showMore" id="showMore">Show More...</div>
+              <div class="countNote"><span id="count">0</span> selected</div>
+            </div>
+
+            <div class="error" id="err3"></div>
+
+            <div class="actions" style="margin-top:10px;">
+              <button class="btn link" id="back3">BACK</button>
+              <button class="btn primary" id="next3">NEXT</button>
+            </div>
+          </section>
+
+          <!-- PAGE 4: Tolerance -->
+          <section id="page4" class="hidden">
+            <h1>What’s your tolerance for graphic language, violence, and sex?</h1>
+
+            <div class="radioStack" id="tolStack">
+              <div class="radioItem" data-value="Low">
+                <div class="dot"></div>
+                <div class="rText"><b>Low</b><span>avoid it</span></div>
+              </div>
+              <div class="radioItem" data-value="Medium">
+                <div class="dot"></div>
+                <div class="rText"><b>Medium</b><span>some okay, but not extreme</span></div>
+              </div>
+              <div class="radioItem" data-value="High">
+                <div class="dot"></div>
+                <div class="rText"><b>High</b><span>anything goes</span></div>
+              </div>
+            </div>
+
+            <div class="error" id="err4"></div>
+
+            <div class="actions">
+              <button class="btn link" id="back4">BACK</button>
+              <button class="btn primary" id="finish">FINISH</button>
+            </div>
+          </section>
+
+          <!-- PAGE 5: Success -->
+          <section id="page5" class="hidden">
+            <div class="success">
+              <div class="check">✓</div>
+              <h1>Your account is set up!</h1>
+              <p style="font-size:16px;">You can edit your info in Settings</p>
+            </div>
+
+            <div class="actions successActions">
+              <button class="btn primary" id="launch">LAUNCH MYSTREME</button>
+              <button class="btn" id="tour">GIVE ME A TOUR OF MYSTREME</button>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Likes/Dislikes short labels
+    const initialGenres = ["Action","Comedy","Documentary","Horror","RealityTV","Sci-Fi","Romance","Thriller","Kids"];
+    const moreGenres = ["Stand Up","LGBQT","Sports","Faith","Musical","Crime","Foreign","Classics","War","Western","Anime"];
+
+    // Services (brand logos in shared /assets folder)
+    const services = [
+      { key:"netflix",   name:"Netflix",     logo:"assets/Netflix.png" },
+      { key:"prime",     name:"Prime Video", logo:"assets/PrimeVideo.png" },
+      { key:"appletv",   name:"Apple TV+",   logo:"assets/AppleTV.png" },
+      { key:"disney",    name:"Disney+",     logo:"assets/DisneyPlus.png" },
+      { key:"hulu",      name:"Hulu",        logo:"assets/Hulu.png" },
+      { key:"hbomax",    name:"HBO Max",     logo:"assets/HBOMax.png" },
+      { key:"peacock",   name:"Peacock",     logo:"assets/Peacock.png" },
+      { key:"paramount", name:"Paramount+",  logo:"assets/Paramount.png" },
+      { key:"youtubetv", name:"YouTube TV",  logo:"assets/YouTubeTV.png" },
+      { key:"fubo",      name:"Fubo",        logo:"assets/Fubo.png" },
+      { key:"tubi",      name:"Tubi",        logo:"assets/Tubi.png" }
+    ];
+
+    // state maps
+    const genreState = new Map();
+    [...initialGenres, ...moreGenres].forEach(g => genreState.set(g, 0)); // 0 none, 1 like, -1 dislike
+
+    const serviceState = new Map();
+    services.forEach(s => serviceState.set(s.key, false));
+
+    let expanded = false;
+    let tolerance = null;
+
+    // Elements
+    const cardRoot = document.getElementById("cardRoot");
+    const bar = document.getElementById("bar");
+    const stepName = document.getElementById("stepName");
+    const stepSub  = document.getElementById("stepSub");
+
+    const page1 = document.getElementById("page1");
+    const page2 = document.getElementById("page2");
+    const page3 = document.getElementById("page3");
+    const page4 = document.getElementById("page4");
+    const page5 = document.getElementById("page5");
+
+    const err1 = document.getElementById("err1");
+    const err3 = document.getElementById("err3");
+    const err4 = document.getElementById("err4");
+
+    const selectedArea = document.getElementById("selectedArea");
+    const unselectedArea = document.getElementById("unselectedArea");
+    const ldDivider = document.getElementById("ldDivider");
+    const showMore = document.getElementById("showMore");
+    const countEl = document.getElementById("count");
+
+    function showError(el, msg){ el.textContent = msg; el.style.display = "block"; }
+    function clearError(el){ el.textContent=""; el.style.display="none"; }
+
+    function selectedCount(){
+      let c = 0;
+      for (const v of genreState.values()) if (v !== 0) c++;
+      return c;
+    }
+
+    // hard lock top (prevents iOS cut-off)
+    function hardScrollTop(){
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      cardRoot.scrollIntoView({ block: "start", inline: "nearest" });
+      requestAnimationFrame(() => {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        cardRoot.scrollIntoView({ block: "start", inline: "nearest" });
+      });
+    }
+
+    function setStep(title, n, total){
+      stepName.textContent = title;
+      stepSub.textContent = `Step ${n} of ${total}`;
+      bar.style.width = `${(n/total)*100}%`;
+    }
+
+    function goTo(which){
+      [page1,page2,page3,page4,page5].forEach(p => p.classList.add("hidden"));
+      which.classList.remove("hidden");
+
+      const total = 5;
+      if (which === page1) setStep("Welcome", 1, total);
+      if (which === page2) setStep("Services", 2, total);
+      if (which === page3) setStep("Preferences", 3, total);
+      if (which === page4) setStep("Boundaries", 4, total);
+      if (which === page5) setStep("Done", 5, total);
+
+      hardScrollTop();
+    }
+
+    // -------- Services rendering --------
+    const serviceListEl = document.getElementById("serviceList");
+
+    function renderServices(){
+      serviceListEl.innerHTML = "";
+      services.forEach(s => {
+        const row = document.createElement("div");
+        row.className = "serviceRow";
+        row.innerHTML = `
+          <div class="svcLeft">
+            <div class="svcLogoBox">
+              <img src="${s.logo}" alt="${s.name} logo" loading="lazy" />
+            </div>
+            <div class="svcName">${s.name}</div>
+          </div>
+          <div class="svcCheck" aria-hidden="true"></div>
+        `;
+
+        const sync = () => row.classList.toggle("on", serviceState.get(s.key) === true);
+        sync();
+
+        row.addEventListener("click", () => {
+          serviceState.set(s.key, !serviceState.get(s.key));
+          sync();
+        });
+
+        serviceListEl.appendChild(row);
+      });
+    }
+
+    // -------- Likes/Dislikes rendering --------
+    function applyBarClass(el, name){
+      el.classList.remove("liked","disliked");
+      const v = genreState.get(name);
+      if (v === 1) el.classList.add("liked");
+      if (v === -1) el.classList.add("disliked");
+    }
+
+    function genreRow(name){
+      const wrap = document.createElement("div");
+      wrap.className = "genreCard";
+      wrap.innerHTML = `
+        <div class="gName condensed">${name}</div>
+        <div class="toggles">
+          <button class="tbtn like" aria-label="Like ${name}" title="Like">👍</button>
+          <button class="tbtn dislike" aria-label="Dislike ${name}" title="Dislike">👎</button>
+        </div>
+      `;
+
+      const likeBtn = wrap.querySelector(".like");
+      const dislikeBtn = wrap.querySelector(".dislike");
+
+      function sync(){
+        const v = genreState.get(name);
+        likeBtn.classList.toggle("on", v === 1);
+        dislikeBtn.classList.toggle("on", v === -1);
+        applyBarClass(wrap, name);
+      }
+
+      likeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const v = genreState.get(name);
+        genreState.set(name, v === 1 ? 0 : 1);
+        renderGenres();
+      });
+
+      dislikeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const v = genreState.get(name);
+        genreState.set(name, v === -1 ? 0 : -1);
+        renderGenres();
+      });
+
+      sync();
+      return wrap;
+    }
+
+    function genreTile2up(name){
+      const tile = document.createElement("div");
+      tile.className = "genreTile";
+      tile.innerHTML = `
+        <div class="gName condensed">${name}</div>
+        <div class="toggles">
+          <button class="tbtn like" aria-label="Like ${name}" title="Like">👍</button>
+          <button class="tbtn dislike" aria-label="Dislike ${name}" title="Dislike">👎</button>
+        </div>
+      `;
+
+      const likeBtn = tile.querySelector(".like");
+      const dislikeBtn = tile.querySelector(".dislike");
+
+      likeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const v = genreState.get(name);
+        genreState.set(name, v === 1 ? 0 : 1);
+        renderGenres();
+      });
+
+      dislikeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const v = genreState.get(name);
+        genreState.set(name, v === -1 ? 0 : -1);
+        renderGenres();
+      });
+
+      const v = genreState.get(name);
+      likeBtn.classList.toggle("on", v === 1);
+      dislikeBtn.classList.toggle("on", v === -1);
+
+      return tile;
+    }
+
+    function renderGenres(){
+      clearError(err3);
+
+      const visible = expanded ? [...initialGenres, ...moreGenres] : [...initialGenres];
+      const liked = visible.filter(g => genreState.get(g) === 1);
+      const disliked = visible.filter(g => genreState.get(g) === -1);
+      const neutral = visible.filter(g => genreState.get(g) === 0);
+
+      selectedArea.innerHTML = "";
+      unselectedArea.innerHTML = "";
+
+      [...liked, ...disliked].forEach(g => selectedArea.appendChild(genreRow(g)));
+      ldDivider.style.display = (liked.length + disliked.length) > 0 ? "block" : "none";
+
+      if (!expanded){
+        neutral.forEach(g => unselectedArea.appendChild(genreRow(g)));
+      } else {
+        const grid = document.createElement("div");
+        grid.className = "grid2";
+        neutral.forEach(g => grid.appendChild(genreTile2up(g)));
+        unselectedArea.appendChild(grid);
+      }
+
+      showMore.textContent = expanded ? "Show Less" : "Show More...";
+      countEl.textContent = selectedCount();
+    }
+
+    // -------- Page 1 --------
+    document.getElementById("next1").addEventListener("click", () => {
+      clearError(err1);
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const gender = document.querySelector('input[name="gender"]:checked')?.value || "";
+      const age = document.querySelector('input[name="age"]:checked')?.value || "";
+
+      if (!email || !email.includes("@")){
+        showError(err1, "Please enter a valid email address.");
+        return;
+      }
+      if (!password || password.length < 6){
+        showError(err1, "Please enter a password (6+ characters).");
+        return;
+      }
+      if (!gender){
+        showError(err1, "Please select Gender (M or F).");
+        return;
+      }
+      if (!age){
+        showError(err1, "Please select an Age range.");
+        return;
+      }
+
+      goTo(page2);
+      renderServices();
+    });
+
+    // -------- Services page --------
+    document.getElementById("back2").addEventListener("click", () => goTo(page1));
+    document.getElementById("next2").addEventListener("click", () => {
+      goTo(page3);
+      renderGenres();
+    });
+
+    // -------- Likes/Dislikes page --------
+    document.getElementById("back3").addEventListener("click", () => goTo(page2));
+    document.getElementById("next3").addEventListener("click", () => {
+      clearError(err3);
+      if (selectedCount() < 3){
+        showError(err3, "Please select at least 3 Likes or Dislikes to continue.");
+        return;
+      }
+      goTo(page4);
+    });
+
+    showMore.addEventListener("click", () => {
+      expanded = !expanded;
+      renderGenres();
+      hardScrollTop();
+    });
+
+    // -------- Tolerance page --------
+    document.querySelectorAll("#tolStack .radioItem").forEach(el => {
+      el.addEventListener("click", () => {
+        tolerance = el.dataset.value;
+        clearError(err4);
+        document.querySelectorAll("#tolStack .radioItem").forEach(x => {
+          x.classList.toggle("on", x.dataset.value === tolerance);
+        });
+      });
+    });
+
+    document.getElementById("back4").addEventListener("click", () => goTo(page3));
+
+    document.getElementById("finish").addEventListener("click", () => {
+      clearError(err4);
+      if (!tolerance){
+        showError(err4, "Please choose Low, Medium, or High.");
+        return;
+      }
+
+      const payload = {
+        email: document.getElementById("email").value.trim(),
+        gender: document.querySelector('input[name="gender"]:checked')?.value || "",
+        age: document.querySelector('input[name="age"]:checked')?.value || "",
+        services: [...serviceState.entries()].filter(([_,v]) => v).map(([k]) => k),
+        likes: [...genreState.entries()].filter(([_,v]) => v === 1).map(([k]) => k),
+        dislikes: [...genreState.entries()].filter(([_,v]) => v === -1).map(([k]) => k),
+        tolerance
+      };
+      try{ localStorage.setItem("mystreme_onboarding_assets_v2", JSON.stringify(payload)); }catch(e){}
+
+      goTo(page5);
+    });
+
+    // -------- Success page --------
+    document.getElementById("launch").addEventListener("click", () => {
+      window.location.href = "https://mystreme.netlify.app";
+    });
+    document.getElementById("tour").addEventListener("click", () => {
+      window.location.href = "https://mystreme.netlify.app/tour";
+    });
+
+    // Init
+    goTo(page1);
+  </script>
+</body>
+</html>
